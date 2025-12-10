@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>City Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="banner">
+        🌍 City Weather & Country Info Explorer
+        <!-- Dark/Light Mode Toggle Button -->
+        <button id="modeToggle" class="mode-toggle">🌙</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Description Section -->
+        <div class="description">
+            <h2>Discover Cities Around the World</h2>
+            <p>
+                City Explorer is a web application that provides real-time weather information, 
+                population details, geographic coordinates, and country info for any city worldwide. 
+                Simply enter a city name to get all the information you need in one place.
+            </p>
+            <p>Powered by GeoDB Cities API, OpenWeatherMap, and RestCountries API.</p>
+        </div>
+
+        <!-- Search Box with buttons -->
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter a city name...">
+            <button onclick="searchCity()">Search</button>
+            <button onclick="window.location.href='history.html'">View Search History</button>
+        </div>
+
+        <!-- Result Box -->
+        <div id="result" class="result-box hidden"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 City Explorer | Built by Our Team
+        <p>
+            We are a group of IT students from <strong>Horizon Campus</strong>, Faculty of Information Technology.
+            This project is developed as part of the <strong>Service-Oriented Computing (SOC)</strong> subject.
+            Our goal is to create useful web applications that provide meaningful information in a clean and intuitive interface.
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        const toggleButton = document.getElementById('modeToggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            toggleButton.textContent = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
+        });
+    </script>
+</body>
+</html>

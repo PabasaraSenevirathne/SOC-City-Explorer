@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>City Explorer - History</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #1b1b1b;
+            color: #eee;
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        tr:hover {
+            background-color: #2c2c2c;
+        }
+
+        .flag-small {
+            width: 40px;
+            border-radius: 4px;
+        }
+
+        .wiki-button {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: #ffcc00;
+            color: #000;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .wiki-button:hover {
+            background-color: #ffaa00;
+        }
+
+        .banner {
+            background-color: #111;
+            padding: 15px;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        a.back-button {
+            float: right;
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.back-button:hover {
+            color: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="banner">
+        🌍 City Explorer - Search History
+        <a href="index.html" class="back-button">🏠 Back</a>
+    </div>
+
+    <div class="container">
+        <h2>All Searches</h2>
+        <table id="history-table">
+            <thead>
+                <tr>
+                    <th>Flag</th>
+                    <th>City, Country</th>
+                    <th>Population</th>
+                    <th>Weather</th>
+                    <th>Searched At</th>
+                    <th>Wikipedia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadHistory() {
+            const tbody = document.querySelector("#history-table tbody");
+            tbody.innerHTML = "<tr><td colspan='6'>⏳ Loading history...</td></tr>";
+
+            try {
+                const res = await fetch("http://localhost:5000/history");
+                const history = await res.json();
+
+                if (!history.length) {
+                    tbody.innerHTML = "<tr><td colspan='6'>No search history found.</td></tr>";
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                history.forEach(item => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td><img src="${item.flag}" class="flag-small"></td>
+                        <td>${item.city}, ${item.country}</td>
+                        <td>${item.population.toLocaleString()}</td>
+                        <td>${item.weather.temp}°C | ${item.weather.humidity}%</td>
+                        <td>${new Date(item.searchedAt).toLocaleString()}</td>
+                        <td><a href="https://en.wikipedia.org/wiki/${item.city}" target="_blank" class="wiki-button">Wiki</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = "<tr><td colspan='6'>❌ Failed to load history.</td></tr>";
+            }
+        }
+
+        loadHistory();
+    </script>
+</body>
+</html>
